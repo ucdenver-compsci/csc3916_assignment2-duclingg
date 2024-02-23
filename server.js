@@ -100,38 +100,55 @@ router.route('/testcollection')
 
 router.route('/movies')
     .get((req, res) => {
-        let obj = getJSONObjectForMovieRequirement(req);
-        obj.message = "GET movies";
-        obj.status = 200;
-        obj.headers = req.headers;
-        obj.query = req.query || "No query string";
-        obj.env = process.env.UNIQUE_KEY;
-        res.json(obj);
+        console.log(req.body);
+        res = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "GET movies";
+        o.headers = res.header;
+        o.query = res.query;
+        o.env = process.env.UNIQUE_KEY;
+        res.json(o);
     })
     .post((req, res) => {
-        let obj = getJSONObjectForMovieRequirement(req);
-        obj.message = "movie saved";
-        obj.status = res.statusCode;
-        obj.query = req.query || "No query string";
-        obj.env = process.env.UNIQUE_KEY;
-        res.json(obj);
+        console.log(req.body);
+        res = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "GET movies";
+        o.headers = res.header;
+        o.query = res.query;
+        o.env = process.env.UNIQUE_KEY;
+        res.json(o);
     })
     .put(authJwtController.isAuthenticated, (req, res) => {
-        let obj = getJSONObjectForMovieRequirement(req);
-        obj.status = 200;
-        obj.message = "movie updated";
-        obj.headers = req.headers;
-        obj.query = req.query || "No query string";
-        obj.env = process.env.UNIQUE_KEY;
-        res.json(obj);
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "GET movies";
+        o.headers = res.header;
+        o.query = res.query;
+        o.env = process.env.UNIQUE_KEY;
+        res.json(o);
     })
     .delete(authController.isAuthenticated, (req, res) => {
-        let obj = getJSONObjectForMovieRequirement(req);
-        obj.status = 200;
-        obj.message = "movie deleted";
-        obj.headers = req.headers;
-        obj.query = req.query || "No query string";
-        res.json(obj);
+        console.log(req.body);
+        res = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+        o.status = 200;
+        o.message = "GET movies";
+        o.headers = res.header;
+        o.query = res.query;
+        o.env = process.env.UNIQUE_KEY;
+        res.json(o);
     })
     .all((req, res) => {
         res.status(405).send({ message: 'HTTP method not supported.' });
