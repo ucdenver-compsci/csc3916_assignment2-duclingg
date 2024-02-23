@@ -43,7 +43,9 @@ function getJSONObjectForMovieRequirement(req) {
 
 router.post('/signup', (req, res) => {
     if (!req.body.username || !req.body.password) {
-        res.json({success: false, msg: 'Please include both username and password to signup.'})
+        res.json({
+            success: false, msg: 'Please include both username and password to signup.'
+        })
     } else {
         var newUser = {
             username: req.body.username,
@@ -59,7 +61,9 @@ router.post('/signin', (req, res) => {
     var user = db.findOne(req.body.username);
 
     if (!user) {
-        res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+        res.status(401).send({
+            success: false, msg: 'Authentication failed. User not found.'
+        });
     } else {
         if (req.body.password == user.password) {
             var userToken = { id: user.id, username: user.username };
@@ -93,9 +97,46 @@ router.route('/testcollection')
         res.json(o);
     }
 );
+
+router.route('/movies')
+    .get((req, res) => {
+        let obj = getJSONObjectForMovieRequirement(req);
+        obj.message = "GET movies";
+        obj.status = 200;
+        obj.headers = req.headers;
+        obj.query = req.query || "No query string";
+        obj.env = process.env.UNIQUE_KEY;
+        res.json(obj);
+    })
+    .post((req, res) => {
+        let obj = getJSONObjectForMovieRequirement(req);
+        obj.message = "movie saved";
+        obj.status = res.statusCode;
+        obj.query = req.query || "No query string";
+        obj.env = process.env.UNIQUE_KEY;
+        res.json(obj);
+    })
+    .put(authJwtController.isAuthenticated, (req, res) => {
+        let obj = getJSONObjectForMovieRequirement(req);
+        obj.status = 200;
+        obj.message = "movie updated";
+        obj.headers = req.headers;
+        obj.query = req.query || "No query string";
+        obj.env = process.env.UNIQUE_KEY;
+        res.json(obj);
+    })
+    .delete(authController.isAuthenticated, (req, res) => {
+        let obj = getJSONObjectForMovieRequirement(req);
+        obj.status = 200;
+        obj.message = "movie deleted";
+        obj.headers = req.headers;
+        obj.query = req.query || "No query string";
+        res.json(obj);
+    })
+    .all((req, res) => {
+        res.status(405).send({ message: 'HTTP method not supported.' });
+});
     
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
-
-
