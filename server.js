@@ -121,7 +121,7 @@ router.route('/movies')
         }
         var o = getJSONObjectForMovieRequirement(req);
         o.status = 200;
-        o.message = "GET movies";
+        o.message = "movie saved";
         o.headers = res.header;
         o.query = res.query;
         o.env = process.env.UNIQUE_KEY;
@@ -130,7 +130,7 @@ router.route('/movies')
     .put(authJwtController.isAuthenticated, (req, res) => {
         var o = getJSONObjectForMovieRequirement(req);
         o.status = 200;
-        o.message = "GET movies";
+        o.message = "movie updated";
         o.headers = res.header;
         o.query = res.query;
         o.env = process.env.UNIQUE_KEY;
@@ -144,7 +144,7 @@ router.route('/movies')
         }
         var o = getJSONObjectForMovieRequirement(req);
         o.status = 200;
-        o.message = "GET movies";
+        o.message = "movie deleted";
         o.headers = res.header;
         o.query = res.query;
         o.env = process.env.UNIQUE_KEY;
